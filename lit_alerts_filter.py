@@ -54,11 +54,13 @@ def parse_email(mail, email_id):
             # Parse the email content (解析邮件内容)
             msg = email.message_from_bytes(response[1])
             # Get the email sender (获取邮件发件人)
-            from_ = decode_header(msg.get("From"))[0][0]
+            from_ = decode_header(msg.get("From"))[-1][0]
+            
             if isinstance(from_, bytes):
                 from_ = from_.decode()
+
             # Check if it is from Google Scholar (检查是否来自Google Scholar)
-            if "scholaralerts-noreply@google.com" in from_:
+            if "scholaralerts" in from_: #"scholaralerts-noreply@google.com"
                 subject, body = decode_email_subject_and_body(msg)
                 return subject, body
     return None, None
@@ -143,11 +145,12 @@ def main(email_address, email_password, start_date, end_date, keywords):
 
 # Run the main function (运行主函数)
 if __name__ == "__main__":
-    email_address = "YOUR_EMAIL"
-    email_password = "YOUR_PASSWORD"
+    email_address = "your address"
+    email_password = "your password"
     # Set the start and end dates for searching emails (设置搜索邮件的起始和结束日期)
-    start_date = datetime.datetime.strptime("2023-11-01", "%Y-%m-%d")
-    end_date = datetime.datetime.now()  # Or set to a specific end date (或设置为特定的结束日期)
+    start_date = datetime.datetime.strptime("2023-12-01", "%Y-%m-%d")
+    end_date = datetime.datetime.strptime("2023-12-31", "%Y-%m-%d")
+    # end_date = datetime.datetime.now()  # Or set to a specific end date (或设置为特定的结束日期)
     # Define a list of keywords (定义关键词列表)
     keywords = ['active']
     main(email_address, email_password, start_date, end_date, keywords)
